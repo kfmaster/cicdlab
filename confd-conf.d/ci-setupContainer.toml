@@ -1,0 +1,18 @@
+[template]
+src = "ci-setupContainer.tmpl"
+dest = "/etc/confd/output/postinstall/S00setupContainer.sh"
+mode = "0755"
+keys = [
+"/services/myci/project_config_dir",
+"/services/datagerrit/name",
+"/services/datajenkins/name",
+"/services/gerrit/name",
+"/services/gerrit/admin_uid",
+"/services/gerrit/admin_password",
+"/services/gerrit/admin_email",
+"/services/gerrit/host_ip",
+"/services/gerrit/weburl",
+"/services/gerrit/ssh_pubkey_file",
+"/services/jenkins/name",
+"/services/jenkins/weburl",
+]

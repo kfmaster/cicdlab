@@ -1,0 +1,84 @@
+datagerrit:
+  image: {{getv "/services/datagerrit/image"}}
+  name: 
+    - {{getv "/services/datagerrit/name"}}
+  command: tail -f /dev/null
+datajenkins:
+  image: {{getv "/services/datajenkins/image"}}
+  name: 
+    - {{getv "/services/datajenkins/name"}}
+  command: tail -f /dev/null
+pggerrit:
+  image: {{getv "/services/pggerrit/image"}}
+  name:
+    - {{getv "/services/pggerrit/name"}}
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_USER={{getv "/services/pggerrit/postgres_user"}}
+    - POSTGRES_PASSWORD={{getv "/services/pggerrit/postgres_password"}}
+    - POSTGRES_DB={{getv "/services/pggerrit/postgres_db"}}
+gerrit:
+  image: {{getv "/services/gerrit/image"}}
+  name: 
+    - {{getv "/services/gerrit/name"}}
+  links:
+    - pggerrit:db
+  ports:
+    - "29418:29418"
+  volumes_from:
+    - datagerrit
+  environment:
+    - WEBURL={{getv "/services/gerrit/weburl"}}
+    - HTTPD_LISTENURL={{getv "/services/gerrit/httpd_listenurl"}}
+    - DATABASE_TYPE={{getv "/services/gerrit/database_type"}} 
+    - AUTH_TYPE={{getv "/services/gerrit/auth_type"}} 
+    - LDAP_SERVER={{getv "/services/gerrit/ldap_server"}}
+    - LDAP_ACCOUNTBASE={{getv "/services/gerrit/ldap_accountbase"}}
+jenkins:
+  image: {{getv "/services/jenkins/image"}}
+  name:
+    - {{getv "/services/jenkins/name"}}
+  ports:
+    - "50000:50000"
+  links:
+    - gerrit
+  volumes_from:
+    - datajenkins
+  command: --prefix={{getv "/services/jenkins/opts"}}
+pgredmine:
+  image: {{getv "/services/pgredmine/image"}}
+  name: 
+    - {{getv "/services/pgredmine/name"}}
+  ports:
+    - 5432
+  environment:
+    - POSTGRES_USER={{getv "/services/pgredmine/postgres_user"}}
+    - POSTGRES_PASSWORD={{getv "/services/pgredmine/postgres_password"}}
+    - POSTGRES_DB={{getv "/services/pgredmine/postgres_db"}}
+redmine:
+  image: {{getv "/services/redmine/image"}}
+  name:
+    - {{getv "/services/redmine/name"}}
+  links:
+    - pgredmine:postgresql
+  environment:
+    - DB_NAME={{getv "/services/redmine/db_name"}}
+    - DB_USER={{getv "/services/redmine/db_user"}}
+    - DB_PASS={{getv "/services/redmine/db_pass"}}
+    - REDMINE_RELATIVE_URL_ROOT={{getv "/services/redmine/relative_url_root"}}
+    - REDMINE_FETCH_COMMITS={{getv "/services/redmine/fetch_commits"}}
+  volumes_from:
+    - gerrit
+nginxproxy:
+  image: {{getv "/services/nginxproxy/image"}}
+  name:
+    - {{getv "/services/nginxproxy/name"}}
+  ports:
+    - "80:80"
+  links:
+    - gerrit
+    - jenkins
+    - redmine
+  volumes:
+    - {{getv "/services/myci/project_config_dir"}}/{{getv "/services/nginxproxy/proxy_mapping"}}
