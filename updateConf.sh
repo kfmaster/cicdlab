@@ -19,18 +19,18 @@ fi
 
 
 # Copy confd templates 
-if [ -d ./confd-templates ]; then
-    cp  ./confd-templates/* ${CONFD_TEMPLATES_DIR}/
+if [ -d ./confd/templates ]; then
+    cp  ./confd/templates/* ${CONFD_TEMPLATES_DIR}/
 else
-    echo "Can not locate the confd-templates directory, please run myciSetup.sh from the same directory where the confd-templates directory exists."
+    echo "Can not locate the confd/templates directory, please run myciSetup.sh from the same directory where the confd/templates directory exists."
     exit 1
 fi
 
 # Copy confd conf.d files 
-if [ -d ./confd-conf.d ]; then
-    cp  ./confd-conf.d/* ${CONFD_CONF_DIR}/
+if [ -d ./confd/conf.d ]; then
+    cp  ./confd/conf.d/* ${CONFD_CONF_DIR}/
 else
-    echo "Can not locate the confd-conf.d directory, please run myciSetup.sh from the same directory where the confd-conf.d directory exists."
+    echo "Can not locate the confd/conf.d directory, please run myciSetup.sh from the same directory where the confd/conf.d directory exists."
     exit 1
 fi
 
