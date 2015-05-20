@@ -1,0 +1,151 @@
+# Creat users groups and roles in freeipa
+#
+# Example format:
+#
+# users:      ## one user per line as the values for this "users" key:
+#   - [user1]
+#   - [user2] 
+#
+# groups:     ## each group has 2 lines, first line is group name, second line indicates group membership (either users or groups, comma seperated)
+#   - [group1]
+#     - [usermember01,usermember02,usermember03]
+#   - [group2]
+#     - [groupmember0l,groupmember02]
+#
+# roles:      ## each role has 2 lines, first line is role name, second line indicated role membership (list of groups, comman seperated)
+#   - [role1]
+#     - [membergroup01, membergroup02,membergroup03]
+#
+# user1       ## indicates user name defined in the users sections, each user has 3 values defined as: password, first and last
+#   password: [password]
+#   first: [first name]
+#   last: [last name]
+#
+# user2     
+#   password: [password]
+#   first: [first name]
+#   last: [last name]
+#
+users:
+  - gerrit
+  - boss01
+  - boss02
+  - boss03
+  - dev01
+  - dev02
+  - dev03
+  - dev04
+  - dev05
+  - dev06
+  - test01
+  - test02
+  - test03
+  - sys01
+  - sys02
+  - sys03
+  - sys04
+
+groups:
+  - developers
+      - gerrit,dev01,dev02,dev03,dev04,dev05,dev06
+  - sysadmins
+      - sys01,sys02,sys03,sys04
+  - qatesters
+      - test01,test02,test03
+  - managers
+      - boss01,boss02,boss03
+  - gerritadmin
+      - developers,sysadmins
+  - jenkins
+      - developers,sysadmins,qatesters
+
+roles:
+  - jenkins
+      - jenkins
+  - gerrit
+      - developers
+
+gerrit:
+  password: gerrit123
+  first: Gerrit
+  last: Admin
+
+boss01:
+  password: boss123
+  first: boss
+  last: manager01
+
+boss02:
+  password: boss123
+  first: boss
+  last: manager02
+
+boss03:
+  password: boss123
+  first: boss
+  last: manager03
+
+dev01:
+  password: dev123
+  first: dev
+  last:  user01
+
+dev02:
+  password: dev123
+  first: dev
+  last:  user02
+
+dev03:
+  password: dev123
+  first: dev
+  last:  user03
+
+dev04:
+  password: dev123
+  first: dev
+  last:  user04
+  
+dev05:
+  password: dev123
+  first: dev
+  last:  user05
+
+dev06:
+  password: dev123
+  first: dev
+  last:  user06
+
+test01:
+  password: test123
+  first: qa
+  last:  test01
+
+test02:
+  password: test123
+  first: qa
+  last:  test02
+
+test03:
+  password: test123
+  first: qa
+  last:  test03
+
+sys01:
+  password: sys123
+  first: sys
+  last:  admin01
+
+sys02:
+  password: sys123
+  first: sys
+  last:  admin02
+
+sys03:
+  password: sys123
+  first: sys
+  last:  admin03
+
+sys04:
+  password: sys123
+  first: sys
+  last:  admin04

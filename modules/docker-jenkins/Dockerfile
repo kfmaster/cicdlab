@@ -5,6 +5,7 @@ MAINTAINER zsx <thinkernel@gmail.com>
 COPY plugins.txt /usr/local/etc/plugins.txt
 RUN /usr/local/bin/plugins.sh /usr/local/etc/plugins.txt
 
+
 # Add gerrit-trigger plugin config file
 COPY gerrit-trigger.xml /usr/local/etc/gerrit-trigger.xml
 
@@ -19,3 +20,8 @@ COPY jenkins.model.JenkinsLocationConfiguration.xml /usr/local/etc/jenkins.model
 
 # Add setup script.
 COPY jenkins-setup.sh /usr/local/bin/jenkins-setup.sh
+
+USER root
+
+# Add config.xml.template for LDAP configuration
+COPY config.xml.template /usr/local/etc/config.xml.template

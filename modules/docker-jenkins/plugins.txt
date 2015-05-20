@@ -2,3 +2,11 @@ gerrit-trigger:2.13.0
 git-client:1.17.0
 git:2.3.5
 scm-api:0.2
+ldap:1.11
+redmine:0.15
+artifactory:2.3.0
+junit:1.6
+dockerhub:1.0
+docker-build-publish:0.15
+docker-build-step:1.24
+docker-plugin:0.9.0-rc1

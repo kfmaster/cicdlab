@@ -47,6 +47,21 @@ else
     sleep 10
 fi
 
+# Start two containers as FreeIPA server to provide LDAP service for other containers.
+LDAP_INTERNAL_IP=$(docker inspect ipa01 |grep IPAddress | awk '{print $2}' |sed -e 's/"//g' -e 's/,//') 
+
+if [ -f ./startFreeipa.sh ]; then
+    bash ./startFreeipa.sh
+    LDAP_INTERNAL_IP=$(docker inspect ipa01 |grep IPAddress | awk '{print $2}' |sed -e 's/"//g' -e 's/,//') 
+    echo
+    echo "Setting ldap server ip to ${LDAP_INTERNAL_IP} ..."
+    echo
+else
+    echo "Can't find startFreeipa.sh in current directory, please myciSetup.sh from the same directory where the startFreeipa.sh script exists."
+    exit 1
+fi
+
+
 # First create naming spaces for etcd variables
 # confd program will use config files in ${CONFD_TEMPLATES_DIR} and ${CONFD_CONF_DIR} to generate configuration files in the ${project_config_dir}.
 for svc in /services /services/myci /services/datagerrit /services/datajenkins /services/pggerrit /services/gerrit /services/jenkins /services/pgredmine /services/redmine /services/nginxproxy
@@ -127,6 +142,9 @@ fi
 
 # Run etcdctl to update all key/value pairs, this may trigger automated etcdctl exec-watch script which will call confd to update configuration files; 
 bash ~/${outfile1} 1>/dev/null 2>&1
+
+# Need reset the ldap server ip to the freeipa docker container's internal ip, in case host firewall blocking the access to the exposed ports on freeipa;
+etcdctl set /services/gerrit/ldap_server ${LDAP_INTERNAL_IP}
 
 # Sleep for 3 seconds in case another confd from etcdctl exec-watch is updating config files;
 # Then Update configuration files using confd if the automated watch script does not run properly;
