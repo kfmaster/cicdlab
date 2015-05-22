@@ -1,0 +1,38 @@
+queue_directory = /var/spool/postfix
+command_directory = /usr/sbin
+daemon_directory = /usr/libexec/postfix
+data_directory = /var/lib/postfix
+mail_owner = postfix
+myhostname = mail01.cicdlab.example.com
+mydomain = cicdlab.example.com
+myorigin = $mydomain
+inet_interfaces = all
+inet_protocols = all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+unknown_local_recipient_reject_code = 550
+mynetworks = 127.0.0.0/8, 172.0.0.0/8, 192.0.0.0/8
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+ 
+  
+smtpd_banner = $myhostname ESMTP
+debug_peer_level = 2
+debugger_command =
+         PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+         ddd $daemon_directory/$process_name $process_id & sleep 5
+sendmail_path = /usr/sbin/sendmail.postfix
+newaliases_path = /usr/bin/newaliases.postfix
+mailq_path = /usr/bin/mailq.postfix
+setgid_group = postdrop
+html_directory = no
+manpage_directory = /usr/share/man
+sample_directory = /usr/share/doc/postfix/samples
+readme_directory = /usr/share/doc/postfix/README_FILES
+message_size_limit = 10485760
+mailbox_size_limit = 1073741824
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject
