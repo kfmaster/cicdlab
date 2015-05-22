@@ -1,3 +1,7 @@
+##Based on https://github.com/openfrontier/jenkins-docker.git, slightly modifed to add more modules and integrate with LDAP
+
+# Following is from the original git repo README
+
 # Jenkins Docker Image
 Official Jenkins docker plus some plugins and scripts in order to integrating with the Gerrit.
   Additional plugins include:

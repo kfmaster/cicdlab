@@ -1,3 +1,7 @@
+##This is based on https://github.com/openfrontier/docker-gerrit.git project, slightly modified so that this module integrate with other parts using docker-composer.
+
+## Following is from the original git repo README
+
 # Gerrit Docker image
  The Gerrit code review system with PostgreSQL and OpenLDAP integration supported.
 ## Container Quickstart

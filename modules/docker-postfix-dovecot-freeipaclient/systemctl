@@ -32,7 +32,6 @@ sub log_command {
 	close LOG;
 }
 log_command("[@ARGV]\n");
-shift if @ARGV and $ARGV[0] eq '-q';
 
 for (my $i = 0; $i < @ARGV; $i++) {
 	if ($ARGV[$i] eq '--ignore-dependencies') {
@@ -610,7 +609,7 @@ if ($COMMAND eq 'start') {
 		while (not -f $data->{'Service.PIDFile'}) {
 			sleep 0.2;
 			$i++;
-			if ($i > 250) {
+			if ($i > 50) {
 				log_command("Starting [$FULL_SERVICE] did not create PIDFile [$data->{'Service.PIDFile'}]\n");
 				exit 10;
 			}
